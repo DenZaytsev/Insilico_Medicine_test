@@ -1,5 +1,7 @@
 from django.db import models
 from django.utils import timezone
+from django.db.models import Sum
+from typing import Dict
 
 
 class House(models.Model):
@@ -19,3 +21,21 @@ class OrderBrick(models.Model):
 
     def __str__(self):
         return f'Задание от {self.created_at} для {self.house}'
+
+
+def get_stats() -> dict:
+    """возвращает статистику по всем домам"""
+    houses = House.objects.all()
+    status: Dict[str, list] = {}
+    for house in houses:
+        status[str(house.id)] = house_stats(house)
+    return status
+
+
+def house_stats(house: House) -> list:
+    """Возвращает статистику о доме сгруппированную по дате."""
+
+    qs = OrderBrick.objects.filter(house=house).values('created_at').annotate(
+        bricks=Sum('brick_quantity')).values('house__address', 'created_at', 'bricks')
+
+    return list(qs)
