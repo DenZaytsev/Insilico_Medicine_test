@@ -1,3 +1,17 @@
-from django.shortcuts import render
+from rest_framework.views import APIView
 
-# Create your views here.
+
+class BaseView(APIView):
+    pass
+
+
+class HomeCreateView(BaseView):
+    pass
+
+
+class AddBricksView(BaseView):
+    pass
+
+
+class StatusListView(BaseView):
+    pass

@@ -1,3 +1,5 @@
 from django.contrib import admin
+from .models import House, OrderBrick
 
-# Register your models here.
+admin.site.register(House)
+admin.site.register(OrderBrick)
